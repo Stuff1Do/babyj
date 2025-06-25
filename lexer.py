@@ -1,5 +1,7 @@
 from tokens import Token, TokenType
 from tokentype import *
+
+
 class Lexer:
     def __init__(self, src):
          self.src = src
@@ -46,8 +48,12 @@ class Lexer:
                 tokens.append(Token(token_type, self.current_char, self.ln, self.col))
                 self._advance()      
             elif self.current_char == ';':
-                tokens.append(Token(TokenType.SEMICOLON, ';', self.ln, self.col))
+                tokens.append(Token(TokenType.SEMICOLON, self.current_char, self.ln, self.col))
                 self._advance()
+            else:
+                self._advance()
+                return []
+
         return tokens
     
 def run(src):
