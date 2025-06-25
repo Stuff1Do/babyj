@@ -1,4 +1,5 @@
 import lexer
+from sys import *
 
 while True:
     text = input('babyj> ')

@@ -19,6 +19,10 @@ class TokenType(Enum):
     LT = '<'
     GT = '>'
 
+
+    PRINT  = 'print'
     LET = 'LET'
-    IDENTIFIER = 'IDENTIFIER'
+    NAME = 'NAME'
     NUMBER = 'NUMBER'
+
+    operators = {'+': PLUS, '-': MINUS, '*': MULTIPLY, '/':DIVIDE}
