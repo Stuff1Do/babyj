@@ -8,6 +8,8 @@ while True:
         print("ByeBye!")
         break
     
-    result = lexer.run(text)
-    for token in result:
-        print(token)
+    result,error = lexer.run(text)
+    if error: print(error.as_string())
+    else:
+        for token in result:
+            print(token)

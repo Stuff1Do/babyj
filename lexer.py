@@ -1,16 +1,30 @@
 from tokens import Token, TokenType
 from tokentype import *
-
-
+class Error:
+    def __init__(self, name, details):
+        self.name = name
+        self.details = details
+    def as_string(self):
+        result = f'{self.name}: {self.details}'
+        return result
+class IllegalCharacterError(Error):
+    def __init__(self, details):
+        super().__init__('IllegalCharacterError', details)
 class Lexer:
     def __init__(self, src):
          self.src = src
-         self.ln = 1
+         self.ln = 1         
          self.col = 0
          self.current_char = self.src[0] if self.src else None
          self.pos = 0
          self._advance()
-    def _advance(self):
+    def peek(self):
+        if self.pos< len(self.src):
+            result = str(self.src[self.pos])
+            return result
+        else:
+            return None 
+    def _advance(self): 
         if self.pos < len(self.src):
               self.current_char = self.src[self.pos]
               self.pos += 1
@@ -26,6 +40,7 @@ class Lexer:
         return result, start_col
     def tokenize(self):
         tokens = []
+        equals= False
         while self.current_char is not None:
             if self.current_char.isspace():
                 if self.current_char == '\n':
@@ -47,17 +62,29 @@ class Lexer:
                 token_type = OPERATORS[self.current_char]
                 tokens.append(Token(token_type, self.current_char, self.ln, self.col))
                 self._advance()      
-            elif self.current_char == ';':
+            elif self.current_char == ';':  
                 tokens.append(Token(TokenType.SEMICOLON, self.current_char, self.ln, self.col))
                 self._advance()
-            else:
+            elif self.current_char == '=' and equals == False:
+                if self.peek() == '=':
+                    tokens.append(Token(TokenType.EQUALS, '==', self.ln, self.col))
+                    equals = True
+                    self._advance()
+                else:
+                    tokens.append(Token(TokenType.ASSIGN, self.current_char, self.ln, self.col))
+                    self._advance()
+            elif equals == True:
                 self._advance()
-                return []
+            
+            else:
+                char = self.current_char
+                self._advance()
+                return [], IllegalCharacterError(f'"{char}"')
 
-        return tokens
+        return tokens, None
     
 def run(src):
     lexer = Lexer(src)
-    tokens = lexer.tokenize()
-    return tokens
+    tokens, error = lexer.tokenize()
+    return tokens, error
              

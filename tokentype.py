@@ -15,6 +15,8 @@ class TokenType(Enum):
     QUOTES = '"'
     LPAREN = '('
     RPAREN = ')'
+    LBRACKET = '{'
+    RBRACKET = '}'
 
     #Special Cases
     ASSIGN = '='
@@ -23,8 +25,6 @@ class TokenType(Enum):
     LTEQ = '<='
     GTEQ = '>='
     
-
-
     PRINT  = 'print'
     LET = 'LET'
     NAME = 'NAME'
