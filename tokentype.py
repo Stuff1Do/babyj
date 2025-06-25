@@ -2,22 +2,27 @@ from enum import Enum
 
 class TokenType(Enum):
 
+    #Single Operators
     PLUS = '+'
     MINUS = '-'
     MULTIPLY = '*'
     DIVIDE = '/'
-    ASSIGN = '='
+    LT = '<'
+    GT = '>'
+
+    #CHARACTERS
     SEMICOLON = ';' 
     QUOTES = '"'
     LPAREN = '('
     RPAREN = ')'
 
+    #Special Cases
+    ASSIGN = '='
     EQUALS = '=='
     NEQ = '!='
     LTEQ = '<='
     GTEQ = '>='
-    LT = '<'
-    GT = '>'
+    
 
 
     PRINT  = 'print'
@@ -28,4 +33,6 @@ class TokenType(Enum):
 OPERATORS = {'+': TokenType.PLUS, 
              '-': TokenType.MINUS, 
              '*': TokenType.MULTIPLY, 
-             '/': TokenType.DIVIDE}
+             '/': TokenType.DIVIDE,
+             '<': TokenType.LT,
+             '>': TokenType.GT}
