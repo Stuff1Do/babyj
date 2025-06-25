@@ -2,13 +2,15 @@ from enum import Enum
 
 class TokenType(Enum):
 
-
     PLUS = '+'
     MINUS = '-'
     MULTIPLY = '*'
     DIVIDE = '/'
     ASSIGN = '='
-    SEMICOLON = ';'
+    SEMICOLON = ';' 
+    QUOTES = '"'
+    LPAREN = '('
+    RPAREN = ')'
 
     EQUALS = '=='
     NEQ = '!='

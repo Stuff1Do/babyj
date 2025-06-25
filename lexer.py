@@ -62,8 +62,7 @@ class Lexer:
             elif self.current_char == ';':
                 tokens.append(Token(TokenType.SEMICOLON, ';', self.ln, self.column))
                 self._advance()
-        
-
+    
         return tokens
     
 def run(src):
