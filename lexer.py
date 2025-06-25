@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-
+from tokentype import *
 class Lexer:
     def __init__(self, src):
          self.src = src
@@ -41,8 +41,8 @@ class Lexer:
             elif self.current_char.isdigit():
                 text, start_col = self.consume_while(lambda c: c.isdigit())
                 tokens.append(Token(TokenType.NUMBER, int(text), self.ln, start_col))
-            elif self.current_char in TokenType.operators:
-                token_type = TokenType.operators[self.current_char]
+            elif self.current_char in OPERATORS:
+                token_type = OPERATORS[self.current_char]
                 tokens.append(Token(token_type, self.current_char, self.ln, self.col))
                 self._advance()        
         return tokens

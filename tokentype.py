@@ -25,4 +25,7 @@ class TokenType(Enum):
     NAME = 'NAME'
     NUMBER = 'NUMBER'
 
-    operators = {'+': PLUS, '-': MINUS, '*': MULTIPLY, '/':DIVIDE}
+OPERATORS = {'+': TokenType.PLUS, 
+             '-': TokenType.MINUS, 
+             '*': TokenType.MULTIPLY, 
+             '/': TokenType.DIVIDE}
