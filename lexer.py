@@ -38,6 +38,14 @@ class Lexer:
             result += self.current_char
             self._advance()
         return result, start_col
+    def consume_string(self):
+        self._advance()
+        result = ''
+        col = self.col
+        while self.current_char != '"':
+            result += self.current_char
+            self._advance()
+        return result, col
     def tokenize(self):
         tokens = []
         equals= False
@@ -75,7 +83,10 @@ class Lexer:
                     self._advance()
             elif equals == True:
                 self._advance()
-            
+            elif self.current_char== '"':
+                string, col = self.consume_string()
+                tokens.append(Token(TokenType.STRING, string, self.ln, col))
+                self._advance()
             else:
                 char = self.current_char
                 self._advance()

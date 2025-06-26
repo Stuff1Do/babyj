@@ -29,7 +29,7 @@ class TokenType(Enum):
     LET = 'LET'
     NAME = 'NAME'
     NUMBER = 'NUMBER'
-
+    STRING = 'STRING'
 OPERATORS = {'+': TokenType.PLUS, 
              '-': TokenType.MINUS, 
              '*': TokenType.MULTIPLY, 
