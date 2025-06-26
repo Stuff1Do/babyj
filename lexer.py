@@ -1,15 +1,16 @@
 from tokens import Token, TokenType
 from tokentype import *
 class Error:
-    def __init__(self, name, details):
+    def __init__(self, name, details, line):
         self.name = name
         self.details = details
+        self.line = line
     def as_string(self):
-        result = f'{self.name}: {self.details}'
+        result = f'{self.name}: {self.details} (line:{self.line})'
         return result
-class IllegalCharacterError(Error):
-    def __init__(self, details):
-        super().__init__('IllegalCharacterError', details)
+class SyntaxError(Error):
+    def __init__(self, details, line):
+        super().__init__('SyntaxError', details, line)
 class Lexer:
     def __init__(self, src):
          self.src = src
@@ -89,7 +90,7 @@ class Lexer:
             elif self.current_char== '"':
                 string, col = self.consume_string()
                 if string == 'not_closed':
-                    return [], IllegalCharacterError("Quotation not closed!")
+                    return [], SyntaxError("Quotation not closed!", self.ln)
                 tokens.append(Token(TokenType.STRING, f'"{string}"', self.ln, col))
                 self._advance()
             elif self.current_char == '{':
@@ -104,10 +105,11 @@ class Lexer:
             elif self.current_char == ')':
                 tokens.append(Token(TokenType.RPAREN, self.current_char, self.ln, self.col))
                 self._advance()
+            
             else:
                 char = self.current_char
                 self._advance()
-                return [], IllegalCharacterError(f'"{char}"')
+                return [], SyntaxError(f'"{char}"', self.ln)
 
         return tokens, None
     
