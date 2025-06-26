@@ -20,10 +20,14 @@ class Lexer:
          self.pos = 0
          self._advance()
     def peek(self):
-        if self.pos< len(self.src):
+        print('current_char:', self.src[self.pos])
+        print('Im outside')
+        if self.pos + 1 < len(self.src):
+            print('im inside')
             result = str(self.src[self.pos])
             return result
         else:
+            print('Im in else') 
             return None 
     def _advance(self): 
         if self.pos < len(self.src):
@@ -59,7 +63,7 @@ class Lexer:
                     self.col = 0
                 self._advance()
             elif self.current_char.isalpha():
-                text, start_col = self.consume_while(lambda c: c.isalnum())
+                text, start_col = self.consume_while(lambda c: c.isalnum()) 
                 if text == 'let':
                     tokens.append(Token(TokenType.LET, text, self.ln,start_col))
                 elif text == 'print':
@@ -69,6 +73,11 @@ class Lexer:
             elif self.current_char.isdigit():
                 text, start_col = self.consume_while(lambda c: c.isdigit())
                 tokens.append(Token(TokenType.NUMBER, int(text), self.ln, start_col))
+            elif self.current_char in OPERATORS and self.peek == '=':
+                appe = str(self.current_char + '=')
+                token_type = EQUAL_OPS[appe]
+                tokens.append(Token(token_type, appe, self.ln, self.col))
+                self._advance()
             elif self.current_char in OPERATORS:
                 token_type = OPERATORS[self.current_char]
                 tokens.append(Token(token_type, self.current_char, self.ln, self.col))

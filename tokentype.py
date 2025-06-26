@@ -9,6 +9,7 @@ class TokenType(Enum):
     DIVIDE = '/'
     LT = '<'
     GT = '>'
+    NOT = '!'
 
     #CHARACTERS
     SEMICOLON = ';' 
@@ -35,4 +36,8 @@ OPERATORS = {'+': TokenType.PLUS,
              '*': TokenType.MULTIPLY, 
              '/': TokenType.DIVIDE,
              '<': TokenType.LT,
-             '>': TokenType.GT}
+             '>': TokenType.GT,
+             '!': TokenType.NOT}
+EQUAL_OPS = {'!=': TokenType.NEQ,
+            '<=':TokenType.NEQ,
+            '>=':TokenType.GTEQ,}
