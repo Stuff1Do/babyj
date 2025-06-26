@@ -43,6 +43,8 @@ class Lexer:
         result = ''
         col = self.col
         while self.current_char != '"':
+            if self.current_char == None:
+                return "not_closed", None
             result += self.current_char
             self._advance()
         return result, col
@@ -86,6 +88,8 @@ class Lexer:
                         self._advance()
             elif self.current_char== '"':
                 string, col = self.consume_string()
+                if string == 'not_closed':
+                    return [], IllegalCharacterError("Quotation not closed!")
                 tokens.append(Token(TokenType.STRING, f'"{string}"', self.ln, col))
                 self._advance()
             elif self.current_char == '{':
