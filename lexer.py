@@ -85,8 +85,13 @@ class Lexer:
                 self._advance()
             elif self.current_char== '"':
                 string, col = self.consume_string()
-                tokens.append(Token(TokenType.STRING, string, self.ln, col))
+                tokens.append(Token(TokenType.STRING, f'"{string}"', self.ln, col))
                 self._advance()
+            elif self.current_char == '(':
+                tokens.append(Token(TokenType.LPAREN, self.current_char, self.ln, self.ln))
+            elif self.current_char == ')':
+                tokens.append(Token(TokenType.RPAREN, self.current_char, self.ln, self.col))
+            
             else:
                 char = self.current_char
                 self._advance()
