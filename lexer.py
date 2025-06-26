@@ -73,25 +73,33 @@ class Lexer:
             elif self.current_char == ';':  
                 tokens.append(Token(TokenType.SEMICOLON, self.current_char, self.ln, self.col))
                 self._advance()
-            elif self.current_char == '=' and equals == False:
-                if self.peek() == '=':
-                    tokens.append(Token(TokenType.EQUALS, '==', self.ln, self.col))
-                    equals = True
+            elif self.current_char == '=':
+                if equals == True:
                     self._advance()
                 else:
-                    tokens.append(Token(TokenType.ASSIGN, self.current_char, self.ln, self.col))
-                    self._advance()
-            elif equals == True:
-                self._advance()
+                    if self.peek() == '=':
+                        tokens.append(Token(TokenType.EQUALS, '==', self.ln, self.col))
+                        equals = True
+                        self._advance()
+                    else:
+                        tokens.append(Token(TokenType.ASSIGN, self.current_char, self.ln, self.col))
+                        self._advance()
             elif self.current_char== '"':
                 string, col = self.consume_string()
                 tokens.append(Token(TokenType.STRING, f'"{string}"', self.ln, col))
                 self._advance()
+            elif self.current_char == '{':
+                tokens.append(Token(TokenType.LBRACKET, self.current_char, self.ln, self.ln))
+                self._advance()
+            elif self.current_char == '}':
+                tokens.append(Token(TokenType.RBRACKET, self.current_char, self.ln, self.col))
+                self._advance()
             elif self.current_char == '(':
                 tokens.append(Token(TokenType.LPAREN, self.current_char, self.ln, self.ln))
+                self._advance()
             elif self.current_char == ')':
                 tokens.append(Token(TokenType.RPAREN, self.current_char, self.ln, self.col))
-            
+                self._advance()
             else:
                 char = self.current_char
                 self._advance()
