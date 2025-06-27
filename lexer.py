@@ -53,7 +53,6 @@ class Lexer:
         tokens = []
         equals= False
         while self.current_char is not None:
-            
             if self.current_char.isspace():
                 if self.current_char == '\n':
                     self.ln += 1
@@ -61,10 +60,9 @@ class Lexer:
                 self._advance()
             elif self.current_char.isalpha():
                 text, start_col = self.consume_while(lambda c: c.isalnum()) 
-                if text == 'let':
-                    tokens.append(Token(TokenType.LET, text, self.ln,start_col))
-                elif text == 'print':
-                    tokens.append(Token(TokenType.PRINT, text, self.ln, start_col))
+                if text in KEYWORDS:
+                    token_type = KEYWORDS[text]
+                    tokens.append(Token(token_type, text, self.ln, self.col))
                 else:
                     tokens.append(Token(TokenType.NAME, text, self.ln, start_col))
             elif self.current_char.isdigit():
@@ -104,19 +102,10 @@ class Lexer:
                     return [], SyntaxError("Quotation not closed!", self.ln)
                 tokens.append(Token(TokenType.STRING, f'"{string}"', self.ln, col))
                 self._advance()
-            elif self.current_char == '{':
-                tokens.append(Token(TokenType.LBRACKET, self.current_char, self.ln, self.ln))
+            elif self.current_char in PARENS:
+                token_type = PARENS[self.current_char]
+                tokens.append(Token(token_type, self.current_char, self.ln, self.ln))
                 self._advance()
-            elif self.current_char == '}':
-                tokens.append(Token(TokenType.RBRACKET, self.current_char, self.ln, self.col))
-                self._advance()
-            elif self.current_char == '(':
-                tokens.append(Token(TokenType.LPAREN, self.current_char, self.ln, self.ln))
-                self._advance()
-            elif self.current_char == ')':
-                tokens.append(Token(TokenType.RPAREN, self.current_char, self.ln, self.col))
-                self._advance()
-            
             else:
                 char = self.current_char
                 self._advance()
