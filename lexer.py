@@ -25,24 +25,27 @@ class Lexer:
             return result
         else:
             return None 
+        
     def _advance(self): 
         if self.pos < len(self.src):
               self.current_char = self.src[self.pos]
               self.pos += 1
-              self.col += 1
+              self.col += 1 
         else:
              self.current_char = None
     def consume_while(self, test):
+        self.string = False
         result = ''
         start_col = self.col
         while self.current_char is not None and test(self.current_char):
+            self.string = True
             result += self.current_char
             self._advance()
         return result, start_col
     def consume_string(self):
         self._advance()
         result = ''
-        col = self.col
+        col = self.col      
         while self.current_char != '"':
             if self.current_char == None:
                 return "not_closed", None
@@ -62,7 +65,7 @@ class Lexer:
                 text, start_col = self.consume_while(lambda c: c.isalnum()) 
                 if text in KEYWORDS:
                     token_type = KEYWORDS[text]
-                    tokens.append(Token(token_type, text, self.ln, self.col))
+                    tokens.append(Token(token_type, text, self.ln, start_col))
                 else:
                     tokens.append(Token(TokenType.NAME, text, self.ln, start_col))
             elif self.current_char.isdigit():
