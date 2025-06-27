@@ -20,9 +20,9 @@ class Lexer:
          self.pos = 0
          self._advance()
     def peek(self):
-        print('current_char:', self.src[self.pos])
+        print('current_char:', self.src[self.pos-1])
         print('Im outside')
-        if self.pos + 1 < len(self.src):
+        if self.pos < len(self.src):
             print('im inside')
             result = str(self.src[self.pos])
             return result
@@ -57,6 +57,7 @@ class Lexer:
         tokens = []
         equals= False
         while self.current_char is not None:
+            
             if self.current_char.isspace():
                 if self.current_char == '\n':
                     self.ln += 1
@@ -73,10 +74,11 @@ class Lexer:
             elif self.current_char.isdigit():
                 text, start_col = self.consume_while(lambda c: c.isdigit())
                 tokens.append(Token(TokenType.NUMBER, int(text), self.ln, start_col))
-            elif self.current_char in OPERATORS and self.peek == '=':
+            elif self.current_char in OPERATORS and self.peek() == '=':
                 appe = str(self.current_char + '=')
                 token_type = EQUAL_OPS[appe]
                 tokens.append(Token(token_type, appe, self.ln, self.col))
+                equals = True
                 self._advance()
             elif self.current_char in OPERATORS:
                 token_type = OPERATORS[self.current_char]
@@ -87,6 +89,7 @@ class Lexer:
                 self._advance()
             elif self.current_char == '=':
                 if equals == True:
+                    equals = False
                     self._advance()
                 else:
                     if self.peek() == '=':
@@ -96,6 +99,7 @@ class Lexer:
                     else:
                         tokens.append(Token(TokenType.ASSIGN, self.current_char, self.ln, self.col))
                         self._advance()
+                        
             elif self.current_char== '"':
                 string, col = self.consume_string()
                 if string == 'not_closed':
