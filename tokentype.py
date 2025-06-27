@@ -3,13 +3,20 @@ from enum import Enum
 class TokenType(Enum):
 
     #Single Operators
-    PLUS = '+'
+    ADDITION = '+'
     SUBTRACT = '-'
     MULTIPLY = '*'
     DIVIDE = '/'
+    MODULUS ='%'
     LT = '<'
     GT = '>'
     NOT = '!'
+
+    #Double Operators
+    INCREMENT = '++'
+    DECREMENT = '--'
+    EXPONENTIATION = '**'
+    FLOORDIVISION = '//'
 
     #CHARACTERS
     SEMICOLON = ';' 
@@ -56,7 +63,12 @@ OPERATORS = {'+': TokenType.PLUS,
              '/': TokenType.DIVIDE,
              '<': TokenType.LT,
              '>': TokenType.GT,
-             '!': TokenType.NOT}
+             '!': TokenType.NOT,
+             '%': TokenType.MODULUS}
+DOUBLE_OPERATORS = {'++': TokenType.INCREMENT,
+                    '--': TokenType.DECREMENT,
+                    '**': TokenType.MULTIPLY,
+                    '//': TokenType.FLOORDIVISION}
 EQUAL_OPS = {'!=': TokenType.NEQ,
             '<=':TokenType.NEQ,
             '>=':TokenType.GTEQ,

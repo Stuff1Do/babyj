@@ -55,6 +55,7 @@ class Lexer:
     def tokenize(self):
         tokens = []
         equals= False
+        seenOP = False
         while self.current_char is not None:
             if self.current_char.isspace():
                 if self.current_char == '\n':
@@ -70,17 +71,28 @@ class Lexer:
                     tokens.append(Token(TokenType.NAME, text, self.ln, start_col))
             elif self.current_char.isdigit():
                 text, start_col = self.consume_while(lambda c: c.isdigit())
-                tokens.append(Token(TokenType.NUMBER, int(text), self.ln, start_col))
-            elif self.current_char in OPERATORS and self.peek() == '=':
-                appe = str(self.current_char + '=')
-                token_type = EQUAL_OPS[appe]
-                tokens.append(Token(token_type, appe, self.ln, self.col))
-                equals = True
-                self._advance()
+                tokens.append(Token(TokenType.NUMBER, int(text), self.ln, start_col))           
             elif self.current_char in OPERATORS:
-                token_type = OPERATORS[self.current_char]
-                tokens.append(Token(token_type, self.current_char, self.ln, self.col))
-                self._advance()      
+                if self.peek()== '=':
+                    appe = str(self.current_char + '=')
+                    token_type = EQUAL_OPS[appe]
+                    tokens.append(Token(token_type, appe, self.ln, self.col))
+                    equals = True
+                    self._advance()
+                elif self.peek() in OPERATORS:
+                    doub = self.current_char + self.peek()
+                    token_type = DOUBLE_OPERATORS[doub]
+                    tokens.append(Token(token_type, doub, self.ln, self.col))
+                    seenOP = True
+                    self._advance()
+                else:  
+                    if seenOP == True:
+                        seenOP = False
+                        self._advance()
+                    else:
+                        token_type = OPERATORS[self.current_char]
+                        tokens.append(Token(token_type, self.current_char, self.ln, self.col))
+                        self._advance()      
             elif self.current_char == ';':  
                 tokens.append(Token(TokenType.SEMICOLON, self.current_char, self.ln, self.col))
                 self._advance()
