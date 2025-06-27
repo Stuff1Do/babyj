@@ -20,14 +20,10 @@ class Lexer:
          self.pos = 0
          self._advance()
     def peek(self):
-        print('current_char:', self.src[self.pos-1])
-        print('Im outside')
         if self.pos < len(self.src):
-            print('im inside')
             result = str(self.src[self.pos])
             return result
         else:
-            print('Im in else') 
             return None 
     def _advance(self): 
         if self.pos < len(self.src):
@@ -89,6 +85,8 @@ class Lexer:
                 self._advance()
             elif self.current_char == '=':
                 if equals == True:
+                    if self.peek() == '=':
+                        return [], SyntaxError('"===" not valid', self.ln)
                     equals = False
                     self._advance()
                 else:
