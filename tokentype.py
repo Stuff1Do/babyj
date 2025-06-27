@@ -4,7 +4,7 @@ class TokenType(Enum):
 
     #Single Operators
     PLUS = '+'
-    MINUS = '-'
+    SUBTRACT = '-'
     MULTIPLY = '*'
     DIVIDE = '/'
     LT = '<'
@@ -27,6 +27,10 @@ class TokenType(Enum):
     NEQ = '!='
     LTEQ = '<='
     GTEQ = '>='
+    PLUSEQ = '+='
+    SUBEQ = '-='
+    MULTEQ = '*='
+    DIVEQ = '/='
     
     #TYPES
     NAME = 'NAME'
@@ -47,7 +51,7 @@ class TokenType(Enum):
     FOREACH= 'FOREACH'
 
 OPERATORS = {'+': TokenType.PLUS, 
-             '-': TokenType.MINUS, 
+             '-': TokenType.SUBTRACT, 
              '*': TokenType.MULTIPLY, 
              '/': TokenType.DIVIDE,
              '<': TokenType.LT,
@@ -55,7 +59,11 @@ OPERATORS = {'+': TokenType.PLUS,
              '!': TokenType.NOT}
 EQUAL_OPS = {'!=': TokenType.NEQ,
             '<=':TokenType.NEQ,
-            '>=':TokenType.GTEQ,}
+            '>=':TokenType.GTEQ,
+            '+=': TokenType.PLUSEQ,
+            '-=': TokenType.SUBEQ,
+            '*=': TokenType.MULTEQ,
+            '/=': TokenType.DIVEQ}
 PARENS = {'(': TokenType.LPAREN,
           ')': TokenType.RPAREN,
           '{':TokenType.LBRACES,

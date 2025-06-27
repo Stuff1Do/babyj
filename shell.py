@@ -1,15 +1,16 @@
-import lexer
-from sys import *
-from tokentype import *
+from sys import argv
+from lexer import *
+from parserj import *
 
-while True:
-    text = input('babyj> ')
-    if text.strip().lower() in ('byebye', 'exit', 'quit'):
-        print("ByeBye!")
-        break
-    
-    result,error = lexer.run(text)
-    if error: print(error.as_string())
+def parse(file):
+    contents = open(file, 'r').read()
+    tokens, error = run(contents)
+    return tokens, error
+
+if __name__ == '__main__':
+    tokens, error = parse(argv[1])
+    if error:
+        print(error.as_string())
     else:
-        for token in result:
+        for token in tokens:
             print(token)

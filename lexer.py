@@ -107,7 +107,7 @@ class Lexer:
                 self._advance()
             elif self.current_char in PARENS:
                 token_type = PARENS[self.current_char]
-                tokens.append(Token(token_type, self.current_char, self.ln, self.ln))
+                tokens.append(Token(token_type, self.current_char, self.ln, self.col))
                 self._advance()
             else:
                 char = self.current_char
