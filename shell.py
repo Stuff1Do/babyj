@@ -14,3 +14,4 @@ if __name__ == '__main__':
     else:
         for token in tokens:
             print(token)
+    
