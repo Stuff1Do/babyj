@@ -15,32 +15,52 @@ class ParserJ:
     def _advance(self):
         self.current += 1
 
+    def matches(self, *types):
+        if self.peek().type in types:
+            tok = self.peek()
+            self.current += 1
+            return tok
+        return None
+
+
+    def expect(self, token_type):
+        tok = self.matches(token_type)
+        if tok:
+            return tok
+        raise SyntaxError(f"Expected {token_type}, got {self.peek().type}", self.peek().line)
+
     def parse(self):
         return self.expression()
     
     def expression(self):
         nodeE = self.term()
-        while self.peek() in (TokenType.ADDITION, TokenType.SUBTRACT):
+        while self.peek().type in (TokenType.ADDITION, TokenType.SUBTRACT):
             op = self.peek()
             self._advance()
             nodeE2 = self.term()
-            nodeE = (op.value, op.type, nodeE, nodeE2)
+            nodeE = ("BINOPS", op.type, nodeE, nodeE2)
         return nodeE
     
-
     def term(self):
         nodeT = self.factor()
-        while self.peek() in (TokenType.MULTIPLY, TokenType.DIVIDE,TokenType.EXPONENTIATION, TokenType.FLOORDIVISION, TokenType.MODULUS):
+        while self.peek().type in (TokenType.MULTIPLY, TokenType.DIVIDE,TokenType.EXPONENTIATION, TokenType.FLOORDIVISION, TokenType.MODULUS):
             op = self.peek()
-            self._advance
+            self._advance()
             nodeT2 = self.factor()
-            nodeT = (op.value, op.type, nodeT, nodeT2)
+            nodeT = ("BINOPS", op.type, nodeT, nodeT2)
         return nodeT
     
     def factor(self):
         tok = self.peek()
-        if tok == TokenType.NUMBER:
+        if tok.type == TokenType.NUMBER:
             self._advance()
             return ('number', tok.value)
+        if tok.type == TokenType.LPAREN:
+            self._advance()
+            node = self.expression()
+            self.expect(TokenType.RPAREN)
+            return node
+
         raise SyntaxError(f'Unexpected token {tok.type}', tok.line)
+
 

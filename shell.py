@@ -12,6 +12,6 @@ if __name__ == '__main__':
     if error:
         print(error.as_string())
     else:
-        for token in tokens:
-            print(token)
+        ast = ParserJ(tokens).parse()
+        print(ast)
     
