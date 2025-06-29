@@ -1,5 +1,1 @@
-let x = 1
-if x > 1 then{
-    print("Hello World");
-    x++
-}
+3 + 4 * 6

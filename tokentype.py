@@ -39,6 +39,7 @@ class TokenType(Enum):
     MULTEQ = '*='
     DIVEQ = '/='
     
+    
     #TYPES
     NAME = 'NAME'
     NUMBER = 'NUMBER'
@@ -46,6 +47,7 @@ class TokenType(Enum):
 
     #KEYWORDS
     PRINT  = 'print'
+    RETURN  = 'return'
     LET = 'LET'
     IF = 'IF'
     THEN = 'THEN'
@@ -57,7 +59,9 @@ class TokenType(Enum):
     DO = 'DO'
     FOREACH= 'FOREACH'
 
-OPERATORS = {'+': TokenType.PLUS, 
+    EOF = 'EOF'
+
+OPERATORS = {'+': TokenType.ADDITION, 
              '-': TokenType.SUBTRACT, 
              '*': TokenType.MULTIPLY, 
              '/': TokenType.DIVIDE,
@@ -67,7 +71,7 @@ OPERATORS = {'+': TokenType.PLUS,
              '%': TokenType.MODULUS}
 DOUBLE_OPERATORS = {'++': TokenType.INCREMENT,
                     '--': TokenType.DECREMENT,
-                    '**': TokenType.MULTIPLY,
+                    '**': TokenType.EXPONENTIATION,
                     '//': TokenType.FLOORDIVISION}
 EQUAL_OPS = {'!=': TokenType.NEQ,
             '<=':TokenType.NEQ,
@@ -84,6 +88,7 @@ PARENS = {'(': TokenType.LPAREN,
           ']':TokenType.RBRACKET,}
 KEYWORDS = {'let': TokenType.LET,
             'print': TokenType.PRINT,
+            'return': TokenType.RETURN,
             'if':TokenType.IF,
             'then': TokenType.THEN,
             'repeat': TokenType.REPEAT,
