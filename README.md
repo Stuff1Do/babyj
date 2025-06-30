@@ -1,7 +1,8 @@
-# compiler-proj
+# babyj
 
 A custom programming language compiler project (in development) written in Python. This repo contains my work-in-progress compiler implementation, including parsing, type checking, and code generation components. 
 
+Because even programmming languages need to crawl before they walk
 
 ## Learning Resources
 This compiler is loosely inspired by 
