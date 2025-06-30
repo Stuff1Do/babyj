@@ -1,14 +1,14 @@
 from tokens import Token, TokenType
 from tokentype import *
-class Error:
+class Error(Exception):
     def __init__(self, name, details, line):
         self.name = name
         self.details = details
         self.line = line
     def as_string(self):
-        result = f'{self.name}: {self.details} (line:{self.line})'
+        result = f'{self.name}: {self.details} (at line:{self.line})'
         return result
-class SyntaxError(Error):
+class IllegalSyntaxError(Error):
     def __init__(self, details, line):
         super().__init__('SyntaxError', details, line)
 class Lexer:

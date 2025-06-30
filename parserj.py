@@ -1,6 +1,6 @@
 from tokens import Token, TokenType
+from lexer import *
 from tokentype import *
-
 
 class ParserJ:
     def __init__(self, tok):
@@ -52,6 +52,11 @@ class ParserJ:
     
     def factor(self):
         tok = self.peek()
+        if tok.type == TokenType.SUBTRACT:
+            op = self.peek()
+            self._advance()
+            operand  = self.factor()
+            return ('UNARYOPS', op.type, operand)
         if tok.type == TokenType.NUMBER:
             self._advance()
             return ('number', tok.value)
@@ -60,7 +65,8 @@ class ParserJ:
             node = self.expression()
             self.expect(TokenType.RPAREN)
             return node
+        
 
-        raise SyntaxError(f'Unexpected token {tok.type}', tok.line)
+        raise IllegalSyntaxError(f'Unexpected token {tok.type}', tok.line)
 
 
