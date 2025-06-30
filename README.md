@@ -12,9 +12,9 @@ This compiler is loosely inspired by
  * Online tutorials on ANTLR / LLVM
 
 ## Roadmap / TODO
- Complete type checker
- Build IR and write optimizer
- Target LLVM or custom bytecode
- Improve README with usage examples
- Add code examples and compiler demo
+ * Complete type checker
+ * Build IR and write optimizer
+ * Target LLVM or custom bytecode
+ * Improve README with usage examples
+ * Add code examples and compiler demo
 
