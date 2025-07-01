@@ -57,9 +57,12 @@ class ParserJ:
             self._advance()
             operand  = self.factor()
             return ('UNARYOPS', op.type, operand)
-        if tok.type == TokenType.NUMBER:
+        if tok.type == TokenType.INTEGER:
             self._advance()
-            return ('number', tok.value)
+            return ('INTEGER', tok.value)
+        if tok.type == TokenType.FLOAT:
+            self._advance()
+            return('FLOAT', tok.value)
         if tok.type == TokenType.LPAREN:
             self._advance()
             node = self.expression()

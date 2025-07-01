@@ -42,7 +42,8 @@ class TokenType(Enum):
     
     #TYPES
     NAME = 'NAME'
-    NUMBER = 'NUMBER'
+    FLOAT = 'FLOAT'
+    INTEGER = 'INTEGER'
     STRING = 'STRING'
 
     #KEYWORDS

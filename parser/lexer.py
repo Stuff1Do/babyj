@@ -10,7 +10,7 @@ class Error(Exception):
         return result
 class IllegalSyntaxError(Error):
     def __init__(self, details, line):
-        super().__init__('SyntaxError', details, line)
+        super().__init__('IllegalSyntaxError', details, line)
 class Lexer:
     def __init__(self, src):
          self.src = src
@@ -33,14 +33,24 @@ class Lexer:
               self.col += 1 
         else:
              self.current_char = None
-    def consume_while(self, test):
-        self.string = False
+    def consume_while(self, test, check_dot = False):
         result = ''
         start_col = self.col
-        while self.current_char is not None and test(self.current_char):
-            self.string = True
-            result += self.current_char
-            self._advance()
+        dot_used = False
+        while self.current_char is not None:
+            if check_dot and self.current_char == '.' and not dot_used:
+                if self.peek() and self.peek().isdigit():
+                    dot_used = True
+                    result += self.current_char
+                    self._advance()
+                else:
+                    raise IllegalSyntaxError(f"Invalid float format", self.ln)
+                
+            if test(self.current_char):
+                result += self.current_char
+                self._advance()
+            else:
+                break
         return result, start_col
     def consume_string(self):
         self._advance()
@@ -70,8 +80,11 @@ class Lexer:
                 else:
                     tokens.append(Token(TokenType.NAME, text, self.ln, start_col))
             elif self.current_char.isdigit():
-                text, start_col = self.consume_while(lambda c: c.isdigit())
-                tokens.append(Token(TokenType.NUMBER, int(text), self.ln, start_col))           
+                text, start_col = self.consume_while(lambda c: c.isdigit(), check_dot = True)
+                if '.' in text:
+                    tokens.append(Token(TokenType.FLOAT, float(text), self.ln, start_col))
+                else:
+                    tokens.append(Token(TokenType.INTEGER, int(text), self.ln, start_col))           
             elif self.current_char in OPERATORS:
                 if self.peek()== '=':
                     appe = str(self.current_char + '=')
