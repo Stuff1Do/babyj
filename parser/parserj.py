@@ -55,7 +55,7 @@ class ParserJ:
         if tok.type == TokenType.SUBTRACT:
             op = self.peek()
             self._advance()
-            operand  = self.factor()
+            operand  = self.factor()    
             return ('UNARYOPS', op.type, operand)
         if tok.type == TokenType.INTEGER:
             self._advance()
@@ -63,6 +63,9 @@ class ParserJ:
         if tok.type == TokenType.FLOAT:
             self._advance()
             return('FLOAT', tok.value)
+        if tok.type == TokenType.STRING:
+            self._advance()
+            return('STRING', tok.value)
         if tok.type == TokenType.LPAREN:
             self._advance()
             node = self.expression()
