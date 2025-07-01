@@ -21,7 +21,7 @@ class ParserJ:
     def _matches(self, *types):
         if self._peek().type in types:
             tok = self._peek()
-            self.current += 1
+            self._advance()
             return tok
         return None
 
@@ -40,11 +40,11 @@ class ParserJ:
         return statements
     
     def statement(self):
-        if self._peek().type == TokenType.IDENTIFIER:
-            if self._lookahead(1).type == TokenType.ASSIGN:
-                return self.assignment()
+        if self._peek().type == TokenType.LET:
+            return self.assignment()
         return self.expression()
     def assignment(self):
+        self._expect(TokenType.LET)
         ident = self._expect(TokenType.IDENTIFIER)
         self._expect(TokenType.ASSIGN)
         expr = self.expression()
