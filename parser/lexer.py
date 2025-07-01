@@ -78,7 +78,7 @@ class Lexer:
                     token_type = KEYWORDS[text]
                     tokens.append(Token(token_type, text, self.ln, start_col))
                 else:
-                    tokens.append(Token(TokenType.NAME, text, self.ln, start_col))
+                    tokens.append(Token(TokenType.IDENTIFIER, text, self.ln, start_col))
             elif self.current_char.isdigit():
                 text, start_col = self.consume_while(lambda c: c.isdigit(), check_dot = True)
                 if '.' in text:

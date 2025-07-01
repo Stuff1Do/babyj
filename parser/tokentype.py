@@ -41,7 +41,7 @@ class TokenType(Enum):
     
     
     #TYPES
-    NAME = 'NAME'
+    IDENTIFIER = 'IDENTIFIER'
     FLOAT = 'FLOAT'
     INTEGER = 'INTEGER'
     STRING = 'STRING'
