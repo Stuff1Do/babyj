@@ -138,7 +138,8 @@ class Lexer:
                 char = self.current_char
                 self._advance()
                 return [], SyntaxError(f'"{char}"', self.ln)
-
+            
+        tokens.append(Token(TokenType.EOF, '', self.ln, self.col))
         return tokens, None
     
 def run(src):
