@@ -1,7 +1,7 @@
 from sys import argv
 from lexer import *
 from parserj import *
-
+from pprint import pprint
 def read(file):
     contents = open(file, 'r').read()
     tokens, error = run(contents)
@@ -13,5 +13,5 @@ if __name__ == '__main__':
         print(error.as_string())
     else:
         ast = ParserJ(tokens).parse()
-        print(ast)
+        pprint(ast)
     

@@ -62,6 +62,13 @@ class TokenType(Enum):
 
     EOF = 'EOF'
 
+
+    def __str__(self):
+        return f"ASTType.{self.name}"
+
+    def __repr__(self):
+        return str(self)
+
 OPERATORS = {'+': TokenType.ADDITION, 
              '-': TokenType.SUBTRACT, 
              '*': TokenType.MULTIPLY, 
@@ -100,3 +107,4 @@ KEYWORDS = {'let': TokenType.LET,
             'do': TokenType.DO,
             'foreach': TokenType.FOREACH}
 
+    

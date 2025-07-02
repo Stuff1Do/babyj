@@ -1,1 +1,4 @@
-print("Hello World")
+let x = 1
+a = x + 2
+b = a * x
+print(b)
