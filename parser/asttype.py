@@ -9,5 +9,10 @@ class ASTType(Enum):
     STRING = 'STRING'
     FLOAT = 'FLOAT'
     IDENTIFIER = 'IDENTIFIER'
+    PRINT = 'PRINT'
     
-        
+    def __str__(self):
+        return f"ASTType.{self.name}"
+
+    def __repr__(self):
+        return str(self)

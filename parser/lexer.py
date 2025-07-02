@@ -76,6 +76,9 @@ class Lexer:
                 text, start_col = self.consume_while(lambda c: c.isalnum()) 
                 if text in KEYWORDS:
                     token_type = KEYWORDS[text]
+                    if token_type == TokenType.PRINT:
+                        if self.peek() is not None and self.peek().isspace(): 
+                            raise IllegalSyntaxError(f"_ space after print ..", self.ln)
                     tokens.append(Token(token_type, text, self.ln, start_col))
                 else:
                     tokens.append(Token(TokenType.IDENTIFIER, text, self.ln, start_col))

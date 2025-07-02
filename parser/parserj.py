@@ -23,7 +23,6 @@ class ParserJ:
             return tok
         return None
 
-
     def _expect(self, token_type):
         tok = self._matches(token_type)
         if tok:
@@ -39,12 +38,33 @@ class ParserJ:
             stmt = self.statement()
             statements.append(stmt)
         return statements
-    
+    def print_statement(self):
+        self._expect(TokenType.LPAREN)
+        
+        expr = None
+        tok = self._peek()
+        if self._peek().type in (TokenType.STRING, TokenType.INTEGER, TokenType.FLOAT, TokenType.IDENTIFIER):
+            self._advance()
+            if tok.type == TokenType.STRING:
+                expr = (ASTType.STRING, tok.value)
+            elif tok.type == TokenType.INTEGER:
+                expr = (ASTType.INTEGER, tok.value)
+            elif tok.type == TokenType.FLOAT:
+                expr = (ASTType.FLOAT, tok.value)
+            elif tok.type == TokenType.IDENTIFIER:
+                expr = (ASTType.IDENTIFIER, tok.value)
+        else:
+            raise IllegalSyntaxError(f"Invalid print content: {self._peek().type}", self._peek().line)
+        
+        self._expect(TokenType.RPAREN)
+        return (ASTType.PRINT, expr)
     def statement(self):
         if self._matches(TokenType.LET):
             return self.declaration()
         elif self._is_reassignment():
             return self.reassignment()
+        elif self._matches(TokenType.PRINT):
+            return self.print_statement()
         else:
             return self.expression()    
     def reassignment(self):
