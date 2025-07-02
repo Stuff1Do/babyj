@@ -7,16 +7,13 @@ class ParserJ:
         self.tok = tok  
         self.current = 0
 
-    def _peek(self):
-        if self.current < len(self.tok):
-            return self.tok[self.current]
-        return Token(TokenType.EOF, '', -1,-1)
-    def _lookahead(self, n):
+    def _peek(self, n=0):
         if self.current + n < len(self.tok):
             return self.tok[self.current + n]
         return Token(TokenType.EOF, '', -1,-1)
+    
     def _advance(self):
-        self.current += 1
+        self.current += 1   
 
     def _matches(self, *types):
         if self._peek().type in types:
@@ -30,8 +27,11 @@ class ParserJ:
         tok = self._matches(token_type)
         if tok:
             return tok
-        raise SyntaxError(f"Expected {token_type}, got {self._peek().type}", self._peek().line)
-
+        raise IllegalSyntaxError(f"Expected {token_type}, got {self._peek().type}", self._peek().line)
+    def _is_reassignment(self):
+        return (self._peek().type == TokenType.IDENTIFIER and 
+                self._peek(1).type == TokenType.ASSIGN)
+    
     def parse(self):
         statements = []
         while self._peek().type != TokenType.EOF:
@@ -40,15 +40,24 @@ class ParserJ:
         return statements
     
     def statement(self):
-        if self._peek().type == TokenType.LET:
-            return self.assignment()
-        return self.expression()
-    def assignment(self):
-        self._expect(TokenType.LET)
-        ident = self._expect(TokenType.IDENTIFIER)
+        if self._matches(TokenType.LET):
+            return self.declaration()
+        elif self._is_reassignment():
+            return self.reassignment()
+        else:
+            return self.expression()    
+    def reassignment(self):
+        name = self._expect(TokenType.IDENTIFIER)
         self._expect(TokenType.ASSIGN)
-        expr = self.expression()
-        return ('ASSIGN', ident.value, expr)
+        value = self.expression()
+        return ('VAR_ASSIGN', name.value, value)
+    
+    def declaration(self):
+        name = self._expect(TokenType.IDENTIFIER)
+        if self._matches(TokenType.ASSIGN):
+            value = self.expression()
+            return ('VAR_DECL', name.value, value)
+        return ('VAR_DECL', name.value)
     
     def expression(self):
         nodeE = self.term()
