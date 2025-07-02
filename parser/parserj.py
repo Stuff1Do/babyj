@@ -1,6 +1,7 @@
 from tokens import Token, TokenType    
-from lexer import *
-from tokentype import *
+from lexer import IllegalSyntaxError, Lexer
+from tokentype import TokenType
+from asttype import ASTType
 
 class ParserJ:
     def __init__(self, tok):
@@ -50,14 +51,14 @@ class ParserJ:
         name = self._expect(TokenType.IDENTIFIER)
         self._expect(TokenType.ASSIGN)
         value = self.expression()
-        return ('VAR_ASSIGN', name.value, value)
+        return (ASTType.VAR_ASSIGN, name.value, value)
     
     def declaration(self):
         name = self._expect(TokenType.IDENTIFIER)
         if self._matches(TokenType.ASSIGN):
             value = self.expression()
-            return ('VAR_DECL', name.value, value)
-        return ('VAR_DECL', name.value)
+            return (ASTType.VAR_DECL, name.value, value)
+        return (ASTType.VAR_DECL, name.value)
     
     def expression(self):
         nodeE = self.term()
@@ -65,16 +66,16 @@ class ParserJ:
             op = self._peek()
             self._advance()
             nodeE2 = self.term()
-            nodeE = ("BINOPS", op.type, nodeE, nodeE2)
+            nodeE = (ASTType.BINOPS, op.type, nodeE, nodeE2)
         return nodeE
     
     def term(self):
         nodeT = self.factor()
         while self._peek().type in (TokenType.MULTIPLY, TokenType.DIVIDE,TokenType.EXPONENTIATION, TokenType.FLOORDIVISION, TokenType.MODULUS):
-            op = self._peek()
+            op = self._peek()   
             self._advance()
             nodeT2 = self.factor()
-            nodeT = ("BINOPS", op.type, nodeT, nodeT2)
+            nodeT = (ASTType.BINOPS, op.type, nodeT, nodeT2)
         return nodeT
     
     def factor(self):
@@ -83,19 +84,19 @@ class ParserJ:
             op = self._peek()
             self._advance()
             operand  = self.factor()    
-            return ('UNARYOPS', op.type, operand)
+            return (ASTType.UNARYOPS, op.type, operand)
         if tok.type == TokenType.INTEGER:
             self._advance()
-            return ('INTEGER', tok.value)
+            return (ASTType.INTEGER, tok.value)
         if tok.type == TokenType.FLOAT:
             self._advance()
-            return('FLOAT', tok.value)
+            return(ASTType.FLOAT, tok.value)
         if tok.type == TokenType.STRING:
             self._advance()
-            return('STRING', tok.value)
+            return(ASTType.STRING, tok.value)
         if tok.type == TokenType.IDENTIFIER:
             self._advance()
-            return ('IDENTIFIER', tok.value)
+            return (ASTType.IDENTIFIER, tok.value)
         if tok.type == TokenType.LPAREN:
             self._advance()
             node = self.expression()
