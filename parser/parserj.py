@@ -58,6 +58,23 @@ class ParserJ:
         
         self._expect(TokenType.RPAREN)
         return (ASTType.PRINT, expr)
+    def return_statement(self):
+        
+        expr = None
+        tok = self._peek()
+        if self._peek().type in (TokenType.STRING, TokenType.INTEGER, TokenType.FLOAT, TokenType.IDENTIFIER):
+            self._advance()
+            if tok.type == TokenType.STRING:
+                expr = (ASTType.STRING, tok.value)
+            elif tok.type == TokenType.INTEGER:
+                expr = (ASTType.INTEGER, tok.value)
+            elif tok.type == TokenType.FLOAT:
+                expr = (ASTType.FLOAT, tok.value)
+            elif tok.type == TokenType.IDENTIFIER:
+                expr = (ASTType.IDENTIFIER, tok.value)
+        else:
+            raise IllegalSyntaxError(f"Invalid return type, got {self._peek().typ}", self._peek().line)
+        return (ASTType.RETURN, expr)
     def statement(self):
         if self._matches(TokenType.LET):
             return self.declaration()
@@ -65,6 +82,8 @@ class ParserJ:
             return self.reassignment()
         elif self._matches(TokenType.PRINT):
             return self.print_statement()
+        elif self._matches(TokenType.RETURN):
+            return self.return_statement()
         else:
             return self.expression()    
     def reassignment(self):

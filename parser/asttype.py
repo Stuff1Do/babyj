@@ -10,6 +10,7 @@ class ASTType(Enum):
     FLOAT = 'FLOAT'
     IDENTIFIER = 'IDENTIFIER'
     PRINT = 'PRINT'
+    RETURN = 'RETURN'
     
     def __str__(self):
         return f"ASTType.{self.name}"

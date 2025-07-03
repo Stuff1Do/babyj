@@ -62,7 +62,6 @@ class TokenType(Enum):
 
     EOF = 'EOF'
 
-
     def __str__(self):
         return f"ASTType.{self.name}"
 
