@@ -81,7 +81,7 @@ DOUBLE_OPERATORS = {'++': TokenType.INCREMENT,
                     '**': TokenType.EXPONENTIATION,
                     '//': TokenType.FLOORDIVISION}
 EQUAL_OPS = {'!=': TokenType.NEQ,
-            '<=':TokenType.NEQ,
+            '<=':TokenType.LTEQ,
             '>=':TokenType.GTEQ,
             '+=': TokenType.PLUSEQ,
             '-=': TokenType.SUBEQ,

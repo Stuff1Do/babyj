@@ -11,7 +11,8 @@ class ASTType(Enum):
     IDENTIFIER = 'IDENTIFIER'
     PRINT = 'PRINT'
     RETURN = 'RETURN'
-    
+    IF = 'IF'
+    BINARY_COND = 'BINARY_COND'
     def __str__(self):
         return f"ASTType.{self.name}"
 
